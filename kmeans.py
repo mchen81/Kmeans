@@ -2,12 +2,14 @@ import random
 import math 
 import numpy as np
 import sys
+import cluster
 
-class KMeans:
-    def __init__(self, k=5, max_iteration=100):
+class KMeans(cluster.cluster):
+    def __init__(self, k=5, max_iterations=100):
         self.k = k
-        self.max_iteration = max_iteration
+        self.max_iterations = max_iterations
     
+    # Randomly pick up k centroids from input_X
     def __init_centroids(self, input_X):
         centroids = []
         for i in range(self.k):
@@ -17,12 +19,14 @@ class KMeans:
             centroids.append(input_X[r_index])
         return centroids
     
+    # Calculate the euclidean distance between two points
     def __get_euclidean_dist(self, c1, c2):
         p1 = np.array(c1) 
         p2 = np.array(c2)
         dist = np.linalg.norm(p1 - p2) 
         return dist
     
+    # Calculate the centroids from a given group of points
     def __get_centroid(self, group):
         group_len = len(group)
         centroid = [0]*len(group[0])
@@ -32,7 +36,8 @@ class KMeans:
         for i in range(len(centroid)):
             centroid[i] /= group_len
         return centroid
-        
+       
+    # divide the given data points into k gropus
     def __group_input_x(self, input_X, centroids, balanced):
         groups = []
         x_group = []
@@ -59,6 +64,7 @@ class KMeans:
 
         return (groups, x_group)
     
+    # Move previous centroids to the centers of given groups
     def __update_centroids(self, groups, centroids):
         for i in range(len(centroids)):
             centroids[i] = self.__get_centroid(groups[i])
@@ -66,14 +72,14 @@ class KMeans:
     
     def fit(self, X):
         centroids = self.__init_centroids(X)
-        for i in range(self.max_iteration):
+        for i in range(self.max_iterations):
             (groups, x_group) = self.__group_input_x(X, centroids, False)
             centroids = self.__update_centroids(groups, centroids)
         return (x_group, centroids);
     
     def fit_extended(self, X, balanced=False):
         centroids = self.__init_centroids(X)
-        for i in range(self.max_iteration):
+        for i in range(self.max_iterations):
             (groups, x_group) = self.__group_input_x(X, centroids, balanced)
             centroids = self.__update_centroids(groups, centroids)
         return (x_group, centroids);
