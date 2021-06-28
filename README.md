@@ -1,4 +1,9 @@
-# assignment-01-clustering
+# KMean
+
+## Description 
+
+About [kmeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html)
+
 
 ## Requirements and Implementation
 ### Implement k-means fit and fit_extended
